@@ -13,7 +13,7 @@ residual_model <- resid(model)
 residual_model
 
 ### uji normalitas dengan melhat grafik
-install.packages("ggplot2"), # Jika sudah terintall boleh dilawat
+install.packages("ggplot2") # Jika sudah terintall boleh dilawat
 library(ggplot2)
 ggplot(as.data.frame(residual_model), aes(residual_model))+
   geom_density(color="black", fill="lightgreen") +
@@ -52,11 +52,11 @@ dwtest(model)
 
 # cara lain
 durbinWatsonTest(model)
-# jika p value lebih besar dari alfa, maka tidak terjadi autokorelasi
+# jika p value lebih besar dari alfa, maka terjadi autokorelasi
 
 
 # UJI HETEROSKEDASTISITAS
 library(lmtest)
 bptest(model)
 
-# jika p value lebih besar dari alfa, maka tidak terjadi heteroskedastiitas
+# jika p value lebih besar dari alfa, maka terjadi heteroskedastiitas
