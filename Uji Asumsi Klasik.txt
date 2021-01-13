@@ -1,0 +1,62 @@
+# import Data
+data <- read.delim('clipboard')
+data
+
+#membuat model regresi
+model <- lm(y~x1+x2, data = data)
+summary(model)
+
+
+# UJI KENORMALAN
+## Shapiro Whilk, yaitu menggunkana nilai residual pada model regresi
+residual_model <- resid(model)
+residual_model
+
+### uji normalitas dengan melhat grafik
+install.packages("ggplot2"), # Jika sudah terintall boleh dilawat
+library(ggplot2)
+ggplot(as.data.frame(residual_model), aes(residual_model))+
+  geom_density(color="black", fill="lightgreen") +
+  labs(title="Distribusi Residu",x="x", y = "Density") +
+  theme_minimal()  
+
+# Jika belum yakin normal atau tidak, silahkan lanjut dengan uji shapio wilk
+shapiro.test(residual_model)
+# Jika p value lebih besar dari alfa, maka bersitribusi normal
+
+
+# UJI MULTIKOLINEARITAS
+## Install dulu packages yg dibutuhkan
+install.packages("car"), 
+library(car)
+vif(model), # yg dimasukkan kedalam fungsi vif adalah model regresi
+# Jika VIF semua variabel independen dibawah 10 berarti tidak terjadi multikolinieritas
+
+
+# UJI AUTOKORELASI
+install.packages("lmtest")
+library(lmtest)
+dwtest(model) 
+
+# deteksi autokorelasi possitif 
+# Jika dw < dL maka terdapat autokorelasi positif,
+# Jika dw > dU maka tidak terdapat autokorelasi positif,
+# Jika dL < dw < dU maka pengujian tidak meyakinkan atau tidak dapat disimpulkan.
+
+# deteksi autokorelasi negatif
+# Jika (4 – dw) < dL maka terdapat autokorelasi negatif,
+# Jika (4 – dw) > dU maka tidak terdapat autokorelasi negatif,
+# Jika dL < (4 – dw) < dU maka pengujian tidak meyakinkan atau tidak dapat disimpulkan.
+
+# Lihat tabel disini http://lkeb.umm.ac.id/files/file/tabel-dw.pdf
+
+# cara lain
+durbinWatsonTest(model)
+# jika p value lebih besar dari alfa, maka tidak terjadi autokorelasi
+
+
+# UJI HETEROSKEDASTISITAS
+library(lmtest)
+bptest(model)
+
+# jika p value lebih besar dari alfa, maka tidak terjadi heteroskedastiitas
